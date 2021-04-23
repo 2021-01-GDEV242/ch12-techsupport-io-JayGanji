@@ -25,6 +25,7 @@ public class Responder
     private ArrayList<String> defaultResponses;
     // The name of the file containing the default responses.
     private static final String FILE_OF_DEFAULT_RESPONSES = "default.txt";
+    private static final String FILE_OF_MAIN_RESPONSES = "responses.txt";
     private Random randomGenerator;
 
     /**
@@ -60,11 +61,34 @@ public class Responder
         // we cannot think of anything else to say...)
         return pickDefaultResponse();
     }
+    
+    private void fillResponseMap()
+    {
+        Charset charset = Charset.forName("US-ASCII");
+        Path path = Paths.get(FILE_OF_MAIN_RESPONSES);
+        try (Scanner s = new Scanner(path, charset)) {
+            while(s.hasNextLine()) {
+                String key = s.nextLine();
+                String response = s.nextLine();
+                while (s.hasNextLine())
+                    response += s.nextLine();
+                responseMap.put(key,response);    
+            }
+        }
+        catch(FileNotFoundException e) {
+            System.err.println("Unable to open " + FILE_OF_MAIN_RESPONSES);
+        }
+        catch(IOException e) {
+            System.err.println("A problem was encountered reading " +
+                               FILE_OF_MAIN_RESPONSES);
+        }
+    }
+        
 
     /**
      * Enter all the known keywords and their associated responses
      * into our response map.
-     */
+     *
     private void fillResponseMap()
     {
         responseMap.put("crash", 
@@ -114,6 +138,7 @@ public class Responder
                         "they simply won't sell... Stubborn people they are. Nothing we can\n" +
                         "do about it, I'm afraid.");
     }
+    */
 
     /**
      * Build up a list of default responses from which we can pick
