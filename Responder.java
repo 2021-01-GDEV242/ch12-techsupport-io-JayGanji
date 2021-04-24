@@ -62,6 +62,10 @@ public class Responder
         return pickDefaultResponse();
     }
     
+    /**
+     * Enter all the known keywords and their associated responses
+     * from a responses text file into our response map.
+     */
     private void fillResponseMap()
     {
         Charset charset = Charset.forName("US-ASCII");
